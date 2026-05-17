@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MediCore AI — Smart Hospital Management</title>
+  <link rel="stylesheet" href="style1.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+ 
+<!-- ══════════════════ SIDEBAR NAV ══════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+    <div class="brand-text">
+      <span class="brand-name">MediCore</span>
+      <span class="brand-tag">AI Hospital</span>
+    </div>
+  </div>
+ 
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">MAIN</div>
+    <a href="#" class="nav-item active" data-page="dashboard">
+      <i class="fa-solid fa-grid-2"></i><span>Dashboard</span>
+    </a>
+    <a href="#" class="nav-item" data-page="doctors">
+      <i class="fa-solid fa-user-doctor"></i><span>Doctors</span>
+    </a>
+    <a href="#" class="nav-item" data-page="appointments">
+      <i class="fa-solid fa-calendar-check"></i><span>Appointments</span>
+    </a>
+    <a href="#" class="nav-item" data-page="queue">
+      <i class="fa-solid fa-list-ol"></i><span>Queue Tracking</span>
+    </a>
+    <div class="nav-section-label">PATIENT</div>
+    <a href="#" class="nav-item" data-page="medicine">
+      <i class="fa-solid fa-pills"></i><span>Medicine Reminders</span>
+    </a>
+    <a href="#" class="nav-item" data-page="chatbot">
+      <i class="fa-solid fa-robot"></i><span>AI Consultation</span>
+    </a>
+    <div class="nav-section-label">GUIDE</div>
+    <a href="#" class="nav-item" data-page="guide">
+      <i class="fa-solid fa-book-medical"></i><span>Module Guide</span>
+    </a>
+  </nav>
+ 
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-avatar">P</div>
+      <div class="user-info"><strong>Patient Portal</strong><span>v2.0 AI</span></div>
+    </div>
+  </div>
+</aside>
+ 
+<!-- ══════════════════ TOPBAR ══════════════════ -->
+<div class="topbar">
+  <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+  <div class="topbar-center" id="pageTitle">Dashboard</div>
+  <div class="topbar-right">
+    <div class="status-dot online"></div>
+    <span class="status-text">System Online</span>
+    <button class="notif-btn" id="notifBtn"><i class="fa-solid fa-bell"></i><span class="notif-badge" id="notifBadge">0</span></button>
+  </div>
+</div>
+ 
+<!-- ══════════════════ PAGES ══════════════════ -->
+<main class="main-content" id="mainContent">
+ 
+  <!-- ─── DASHBOARD ─── -->
+  <section class="page active" id="page-dashboard">
+    <div class="page-header">
+      <h1>Welcome Back <span class="accent">👋</span></h1>
+      <p>Here's your hospital overview for today</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card teal">
+        <div class="stat-icon"><i class="fa-solid fa-user-doctor"></i></div>
+        <div class="stat-info"><span class="stat-num" id="statDoctors">12</span><span class="stat-label">Active Doctors</span></div>
+      </div>
+      <div class="stat-card coral">
+        <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+        <div class="stat-info"><span class="stat-num" id="statAppts">34</span><span class="stat-label">Today's Appointments</span></div>
+      </div>
+      <div class="stat-card violet">
+        <div class="stat-icon"><i class="fa-solid fa-list-ol"></i></div>
+        <div class="stat-info"><span class="stat-num" id="statQueue">18</span><span class="stat-label">In Queue Now</span></div>
+      </div>
+      <div class="stat-card amber">
+        <div class="stat-icon"><i class="fa-solid fa-pills"></i></div>
+        <div class="stat-info"><span class="stat-num" id="statMeds">7</span><span class="stat-label">Medicine Reminders</span></div>
+      </div>
+    </div>
+ 
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Appointments</h3>
+        <div class="appt-list" id="dashApptList"></div>
+      </div>
+      <div class="dash-card">
+        <h3><i class="fa-solid fa-bell"></i> Today's Medicine Schedule</h3>
+        <div class="med-timeline" id="dashMedList"></div>
+      </div>
+      <div class="dash-card wide">
+        <h3><i class="fa-solid fa-chart-bar"></i> Department Queue Status</h3>
+        <div class="queue-bars" id="dashQueueBars"></div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ─── DOCTORS ─── -->
+  <section class="page" id="page-doctors">
+    <div class="page-header">
+      <h1>Available <span class="accent">Doctors</span></h1>
+      <p>Browse specialists and their availability</p>
+    </div>
+    <div class="filter-bar">
+      <input type="text" id="doctorSearch" placeholder="🔍 Search doctor or specialization..." class="search-input"/>
+      <select id="specFilter" class="filter-select">
+        <option value="">All Specializations</option>
+        <option>Cardiology</option>
+        <option>Neurology</option>
+        <option>Orthopedics</option>
+        <option>Pediatrics</option>
+        <option>Dermatology</option>
+        <option>Gynecology</option>
+        <option>Oncology</option>
+        <option>General Medicine</option>
+      </select>
+    </div>
+    <div class="doctor-grid" id="doctorGrid"></div>
+  </section>
+ 
+  <!-- ─── APPOINTMENTS ─── -->
+  <section class="page" id="page-appointments">
+    <div class="page-header">
+      <h1>Book <span class="accent">Appointment</span></h1>
+      <p>Schedule your consultation with ease</p>
+    </div>
+    <div class="appt-layout">
+      <div class="appt-form-card">
+        <h3><i class="fa-solid fa-calendar-plus"></i> New Appointment</h3>
+        <div class="form-group">
+          <label>Patient Name</label>
+          <input type="text" id="apptPatient" placeholder="Your full name"/>
+        </div>
+        <div class="form-group">
+          <label>Select Doctor</label>
+          <select id="apptDoctor">
+            <option value="">— Choose Doctor —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Department</label>
+          <input type="text" id="apptDept" placeholder="Auto-filled" readonly/>
+        </div>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="apptDate"/>
+        </div>
+        <div class="form-group">
+          <label>Time Slot</label>
+          <select id="apptTime">
+            <option>09:00 AM</option><option>09:30 AM</option>
+            <option>10:00 AM</option><option>10:30 AM</option>
+            <option>11:00 AM</option><option>11:30 AM</option>
+            <option>02:00 PM</option><option>02:30 PM</option>
+            <option>03:00 PM</option><option>03:30 PM</option>
+            <option>04:00 PM</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Reason</label>
+          <textarea id="apptReason" placeholder="Brief description of symptoms..."></textarea>
+        </div>
+        <button class="btn-primary" onclick="bookAppointment()"><i class="fa-solid fa-check"></i> Book Appointment</button>
+      </div>
+      <div class="appt-list-card">
+        <h3><i class="fa-solid fa-list"></i> My Appointments</h3>
+        <div id="appointmentsList"></div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ─── QUEUE TRACKING ─── -->
+  <section class="page" id="page-queue">
+    <div class="page-header">
+      <h1>Live Queue <span class="accent">Tracker</span></h1>
+      <p>Real-time department queue status</p>
+    </div>
+    <div class="queue-join-bar">
+      <select id="queueDeptSelect" class="filter-select">
+        <option value="">— Select Department —</option>
+        <option>General Medicine</option>
+        <option>Cardiology</option>
+        <option>Neurology</option>
+        <option>Orthopedics</option>
+        <option>Pediatrics</option>
+        <option>Dermatology</option>
+        <option>Gynecology</option>
+        <option>Emergency</option>
+        <option>Laboratory</option>
+        <option>Radiology</option>
+      </select>
+      <input type="text" id="queuePatientName" placeholder="Patient Name" class="search-input" style="max-width:200px"/>
+      <button class="btn-primary" onclick="joinQueue()"><i class="fa-solid fa-plus"></i> Join Queue</button>
+    </div>
+    <div class="queue-departments" id="queueDepartments"></div>
+  </section>
+ 
+  <!-- ─── MEDICINE REMINDERS ─── -->
+  <section class="page" id="page-medicine">
+    <div class="page-header">
+      <h1>Medicine <span class="accent">Reminders</span></h1>
+      <p>Never miss a dose with smart scheduling</p>
+    </div>
+    <div class="med-layout">
+      <div class="med-form-card">
+        <h3><i class="fa-solid fa-pills"></i> Add Reminder</h3>
+        <div class="form-group">
+          <label>Medicine Name</label>
+          <input type="text" id="medName" placeholder="e.g., Metformin 500mg"/>
+        </div>
+        <div class="form-group">
+          <label>Dosage</label>
+          <input type="text" id="medDose" placeholder="e.g., 1 tablet"/>
+        </div>
+        <div class="form-group">
+          <label>Frequency</label>
+          <select id="medFreq">
+            <option value="once">Once daily</option>
+            <option value="twice">Twice daily</option>
+            <option value="thrice">Three times daily</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div class="form-group" id="customTimeGroup" style="display:none">
+          <label>Custom Times (comma separated)</label>
+          <input type="text" id="medCustomTimes" placeholder="08:00, 14:00, 20:00"/>
+        </div>
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" id="medStart"/>
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <input type="date" id="medEnd"/>
+        </div>
+        <div class="form-group">
+          <label>With Food?</label>
+          <select id="medFood">
+            <option value="before">Before meals</option>
+            <option value="after">After meals</option>
+            <option value="any">Anytime</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <input type="text" id="medNotes" placeholder="e.g., Prescribed by Dr. Sharma"/>
+        </div>
+        <button class="btn-primary" onclick="addMedicineReminder()"><i class="fa-solid fa-plus"></i> Add Reminder</button>
+      </div>
+      <div class="med-list-card">
+        <h3><i class="fa-solid fa-clock"></i> Active Reminders</h3>
+        <div id="medicineList"></div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ─── AI CHATBOT ─── -->
+  <section class="page" id="page-chatbot">
+    <div class="page-header">
+      <h1>AI <span class="accent">Consultation</span></h1>
+      <p>Describe your symptoms and get preliminary guidance</p>
+    </div>
+    <div class="chatbot-container">
+      <div class="chat-info-bar">
+        <div class="ai-badge"><i class="fa-solid fa-robot"></i> MediBot AI</div>
+        <span class="disclaimer"><i class="fa-solid fa-triangle-exclamation"></i> Not a substitute for professional medical advice</span>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg bot">
+          <div class="msg-avatar bot-av"><i class="fa-solid fa-robot"></i></div>
+          <div class="msg-bubble">
+            <p>Hello! I'm <strong>MediBot</strong>, your AI health assistant. 👋</p>
+            <p>You can describe your symptoms and I'll help you understand possible conditions and which specialist you might need to see. Remember, this is preliminary guidance only — always consult a real doctor for diagnosis.</p>
+            <p>How can I help you today?</p>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-bar">
+        <textarea id="chatInput" placeholder="Describe your symptoms... (e.g., 'I have chest pain and shortness of breath')" rows="2"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+      <div class="quick-prompts">
+        <span class="quick-label">Quick:</span>
+        <button class="quick-btn" onclick="quickPrompt('I have a severe headache and fever')">Headache & Fever</button>
+        <button class="quick-btn" onclick="quickPrompt('I have chest pain and difficulty breathing')">Chest Pain</button>
+        <button class="quick-btn" onclick="quickPrompt('I have joint pain and swelling in my knees')">Joint Pain</button>
+        <button class="quick-btn" onclick="quickPrompt('I need to know about my diabetes medication')">Diabetes Query</button>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ─── MODULE GUIDE ─── -->
+  <section class="page" id="page-guide">
+    <div class="page-header">
+      <h1>System <span class="accent">Guide</span></h1>
+      <p>Complete overview of all modules</p>
+    </div>
+    <div class="guide-grid" id="guideContent"></div>
+  </section>
+ 
+</main>
+ 
+<!-- ══════════════════ NOTIFICATION TOAST ══════════════════ -->
+<div class="toast-container" id="toastContainer"></div>
+ 
+<!-- ══════════════════ MEDICINE ALARM OVERLAY ══════════════════ -->
+<div class="med-alarm-overlay" id="medAlarm" style="display:none">
+  <div class="med-alarm-card">
+    <div class="alarm-icon"><i class="fa-solid fa-bell"></i></div>
+    <h2>Medicine Reminder!</h2>
+    <p id="alarmMedName">Take your medicine</p>
+    <p id="alarmMedDetails" class="alarm-details"></p>
+    <div class="alarm-actions">
+      <button class="btn-primary" onclick="dismissAlarm('taken')"><i class="fa-solid fa-check"></i> Taken</button>
+      <button class="btn-secondary" onclick="dismissAlarm('snooze')"><i class="fa-solid fa-clock"></i> Snooze 10 min</button>
+      <button class="btn-ghost" onclick="dismissAlarm('skip')">Skip</button>
+    </div>
+  </div>
+</div>
+ 
+<script src="script.js"></script>
+<script src="dashboard.js"></script>
+<script src="appointment.js"></script>
+<script src="queue.js"></script>
+<script src="medicine.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>
+ 
